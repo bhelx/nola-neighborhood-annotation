@@ -5,10 +5,6 @@ He mentioned that it was hard to segment the call for service data by neighborho
 This script adds a new column to the data with the neighborhood name of the origin call using the neighborhood boundaries
 [from this dataset](http://portal-nolagis.opendata.arcgis.com/datasets/e7daa4c977d14e1b9e2fa4d7aff81e59_0.zip).
 
-I have the provided the [annotated 2016 data](data/calls_for_service/2016_annotated.csv) as an example
-but this will work with the other years as well. This can also be adapted to work with any type of data.
-If you want me to run it on some new data for you, please file file an issue.
-
 ## Setup
 
 You'll need `python` and `pip`. This will depend on your system.
@@ -19,13 +15,41 @@ Run pip on the requirements file to get the dependencies:
 pip install -r requirements.txt
 ```
 
-## Example Usage
+## Usage
 
-The `annotate.py` script takes a csv file for input and outputs a new csv file with the new `Neighborhood` column.
+The `annotate.py` script takes a csv file for input and outputs a new csv file with the new column of your choosing.
 It streams the new rows into the output file one at a time.
 
 ```
-$ python annotate.py data/calls_for_service/2016.csv output.csv
+usage: annotate.py [-h] [--lat-column LAT_COLUMN] [--lng-column LNG_COLUMN]
+                   [--loc-column LOC_COLUMN]
+                   input_file output_file output_column shape_file
+
+Annotate csv file with shape tags
+
+positional arguments:
+  input_file            the input csv file path
+  output_file           the output csv file path
+  output_column         the name of the column you wish to add
+  shape_file            the path to the shp file
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --lat-column LAT_COLUMN
+                        the 0-indexed column position for latitude (if in it's
+                        own column)
+  --lng-column LNG_COLUMN
+                        the 0-indexed column position for longitude (if in
+                        it's own column)
+  --loc-column LOC_COLUMN
+                        the 0-indexed column position for location (if lat and
+                        lng are in one column)
+```
+
+## Example
+
+```
+$ python annotate.py ~/Desktop/calls_for_service/2016.csv output.csv Neighborhood data/neighborhoods/neighborhoods.shp --loc-column=20
 
 #2 lat: 29.98645605 lng: -90.06910049 -> FAIRGROUNDS
 #3 lat: 29.94662744 lng: -90.06570836 -> CENTRAL BUSINESS DISTRICT

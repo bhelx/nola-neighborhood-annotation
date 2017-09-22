@@ -11,9 +11,9 @@ from shapely.geometry import Point
 
 # A datastructure to hold a shape (neighborhood, beat, etc)
 class Shape:
-    def __init__(self, feature):
+    def __init__(self, feature, property_name):
         self.polygon = shapely.geometry.shape(feature['geometry'])
-        self.name = feature['properties']['gnocdc_lab']
+        self.name = feature['properties'][property_name]
         self.centroid = self.polygon.centroid
 
 def sort_shapes(shapes, point):
@@ -62,8 +62,15 @@ def annotate_csv(in_file, out_file, options):
     the new Neighbhorhood column
     """
 
-    fc = fiona.open(options.shape_file)
-    shapes = [Shape(feature) for feature in fc]
+    dataset = options.shape_dataset
+    if dataset == 'neighborhoods':
+        property_name = 'gnocdc_lab'
+    elif dataset == 'city_council_districts':
+        property_name = 'NAME'
+
+    shape_file = "data/%s/%s.shp" % (dataset, dataset)
+    fc = fiona.open(shape_file)
+    shapes = [Shape(feature, property_name) for feature in fc]
 
     reader = csv.reader(in_file)
     writer = csv.writer(out_file)
@@ -102,7 +109,7 @@ if __name__ == '__main__':
     parser.add_argument('input_file', metavar='input_file', help='the input csv file path')
     parser.add_argument('output_file', metavar='output_file', help='the output csv file path')
     parser.add_argument('output_column', metavar='output_column', help='the name of the column you wish to add')
-    parser.add_argument('shape_file', metavar='shape_file', help='the path to the shp file')
+    parser.add_argument('shape_dataset', metavar='shape_dataset', help='the dataset of shapes to use')
     parser.add_argument('--lat-column', type=int, help="the 0-indexed column position for latitude (if in it's own column)")
     parser.add_argument('--lng-column', type=int, help="the 0-indexed column position for longitude (if in it's own column)")
     parser.add_argument('--loc-column', type=int, help="the 0-indexed column position for location (if lat and lng are in one column)")

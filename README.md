@@ -23,7 +23,7 @@ It streams the new rows into the output file one at a time.
 ```
 usage: annotate.py [-h] [--lat-column LAT_COLUMN] [--lng-column LNG_COLUMN]
                    [--loc-column LOC_COLUMN]
-                   input_file output_file output_column shape_file
+                   input_file output_file output_column shape_dataset
 
 Annotate csv file with shape tags
 
@@ -31,7 +31,7 @@ positional arguments:
   input_file            the input csv file path
   output_file           the output csv file path
   output_column         the name of the column you wish to add
-  shape_file            the path to the shp file
+  shape_dataset         the dataset of shapes to use
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -49,7 +49,7 @@ optional arguments:
 ## Example
 
 ```
-$ python annotate.py ~/Desktop/calls_for_service/2016.csv output.csv Neighborhood data/neighborhoods/neighborhoods.shp --loc-column=20
+$ python annotate.py ~/Desktop/calls_for_service/2016.csv output.csv Neighborhood neighborhoods --loc-column=20
 
 #2 lat: 29.98645605 lng: -90.06910049 -> FAIRGROUNDS
 #3 lat: 29.94662744 lng: -90.06570836 -> CENTRAL BUSINESS DISTRICT

@@ -67,6 +67,8 @@ def annotate_csv(in_file, out_file, options):
         property_name = 'gnocdc_lab'
     elif dataset == 'city_council_districts':
         property_name = 'NAME'
+    elif dataset == 'voting_precincts':
+        property_name = 'PRECINCTID'
 
     shape_file = "data/%s/%s.shp" % (dataset, dataset)
     fc = fiona.open(shape_file)
